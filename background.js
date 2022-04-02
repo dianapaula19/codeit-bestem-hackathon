@@ -1,11 +1,10 @@
-let selectedOption = chrome.storage.sync.get(["option"]);
+let state = false;
 
-console.log(selectedOption);
-
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === "Loading" && selectedOption !== "normal") {
-    chrome.tabs.insertCSS(tabId, {file: 'override.css'}, () => {
-      console.log("Inserted");
-    });
+chrome.browserAction.onClicked.addListener(function(tab) {
+  if (!state) {
+    chrome.tabs.insertCSS(null, { file: "override.css" });
+    state = !state;
+    return;
   }
-})
+  state = !state;
+});
